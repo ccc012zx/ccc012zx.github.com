@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[张朦胧的 Blog]]></title>
+  <link href="http://ccc012zx.github.com/atom.xml" rel="self"/>
+  <link href="http://ccc012zx.github.com/"/>
+  <updated>2012-07-30T21:19:23+08:00</updated>
+  <id>http://ccc012zx.github.com/</id>
+  <author>
+    <name><![CDATA[ccc012zx]]></name>
+    <email><![CDATA[javac.m.z@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+</feed>
