@@ -4,7 +4,7 @@
   <title><![CDATA[张朦胧的 Blog]]></title>
   <link href="http://ccc012zx.github.com/atom.xml" rel="self"/>
   <link href="http://ccc012zx.github.com/"/>
-  <updated>2012-07-30T21:19:23+08:00</updated>
+  <updated>2012-08-03T10:43:19+08:00</updated>
   <id>http://ccc012zx.github.com/</id>
   <author>
     <name><![CDATA[ccc012zx]]></name>
@@ -12,5 +12,109 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Windows7下，用Octopress在Github上搭建博客]]></title>
+    <link href="http://ccc012zx.github.com/blog/2012/08/01/the-first/"/>
+    <updated>2012-08-01T08:58:00+08:00</updated>
+    <id>http://ccc012zx.github.com/blog/2012/08/01/the-first</id>
+    <content type="html"><![CDATA[<p>本文主要参考: http://shanewfx.github.com/blog/2012/02/16/bulid-blog-by-octopress/
+本文在Windows7下测试成功。</p>
+
+<p>安装和设置Git
+下载Git for Windows，采用默认安装，安装完成后就可以在本地使用Git了。
+但要将内容放到Github上，必须先在Github网站上注册个账户，然后在本机使用Git创建SSH Key。操作如下：</p>
+
+<p>在Git Bash上输入命令:
+ssh-keygen -C &#8220;username@email.com&#8221; -t rsa</p>
+
+<p>Note: “username@email.com”需要更换成你在Github上注册的Email地址或者是Username</p>
+
+<p>这样会在用户目录(C:\Users\用户名)下产生一个.ssh文件夹，里面为对应的SSH Keys，其中id_rsa.pub是Github需要的SSH公钥文件。
+到c:\Users\用户名.ssh\目录找到id_rsa.pub（可能位置不一定对，但是确认是以.pub结尾的文件），并用记事本打开复制全部内容。
+Note：建议私钥公钥的名称最好写成&#8221;id_rsa&#8221;，这样连接Github的时候会找这个文件，如果文件名已定，之后改名也行。</p>
+
+<p>在github网站选择“Account Settings”>>“SSH Public Keys”>>“Add another public key”，将刚才复制的内容粘贴到key文本框内。</p>
+
+<p>这样就可以直接使用Git和GitHub了。
+Note：建议在Git Bash中输入“ssh -v git@github.com”测试能够正常连接github</p>
+
+<p>安装Ruby环境
+下载RubyInstaller和DevKit。
+因为Octopress需要的Ruby版本为1.9.2，所以选rubyinstaller-1.9.2-p290.exe，DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe。</p>
+
+<p>先安装RubyInstaller，然后解压缩DevKit(路径中不能有中文)。
+在“Start Command Prompt with Ruby”命令行中进入DevKit解压缩的目录，然后运行以下命令:
+ruby dk.rb init
+ruby dk.rb install
+gem install rdiscount &#8211;platform=ruby</p>
+
+<p>如果安装成功，就可以使用一些Ruby的工具了，也为后面搭建博客提供了基础环境。</p>
+
+<p>安装Octopress
+先通过Git从Github上克隆一份Octopress（在Git Bash上输入命令）
+git clone git://github.com/imathis/octopress.git octopress</p>
+
+<p>然后安装一些依赖的工具（后面都是在Start Command Prompt with Ruby中输入）
+cd octopress
+ruby &#8211;version # Should report Ruby 1.9.2
+gem install bundler
+bundle install
+安装Octopress默认的Theme
+rake install</p>
+
+<p>配置Octopress
+将octopress的文件夹下的_config.yml的编码改成UTF-8：
+保存（或另存为）时选择编码格式为UTF-8</p>
+
+<p>修改_config.yml，批改url、title、subtitle、author等等。</p>
+
+<p>到Ruby的安装目次\lib\ruby\gems\1.9.1\gems\jekyll-0.11.2\lib\jekyll\找到convertible.rb这个文件，批改self.content = File.read（File.join（base， name））为self.content = File.read（File.join（base， name）， :encoding => &#8220;utf-8&#8221;）。</p>
+
+<p>写博文
+最简单的方式：复制octopress\source_posts下某个文件，例如2012-07-30-the-first-post.markdown，修改文件名和文件中的内容
+或者，命令行中输入rake new_post[&#8220;title&#8221;]，会创建一个新的Post，新文件在source/_post下，文件名如下面的格式:2012-07-31-title.markdown。该文件可以直接打开修改。</p>
+
+<p>写文章时，可以使用Markdown和Octopress Plugins等工具对内容进行格式排版。</p>
+
+<p>预览效果
+在修改设置或者写完文章后，想看看具体效果，可以通过如下命令来完成:
+rake generate
+rake preview</p>
+
+<p>将博客部署到Github上
+在预览的效果符合自己的预期后，就可以通过如下命令将内容部署到Github上了。
+如果是第一次部署，需要在Github上创建一个username.github.com的repository
+在github网站选择“Create a New Repo”,如图</p>
+
+<p>填写对应的内容即可
+note：Repository name填写username.github.com，username一定要和github的username一致，建好的博客代表的是你这个github账户的主页即page</p>
+
+<p>配置octopress与github的连接：
+进入Octopress目录：
+rake setup_github_pages</p>
+
+<p>按照提示填入你的github项目网址，比如：
+git@github.com:Username/yourname.github.com.git
+note：可以按照上面的修改，也可以在github的项目页中找地址</p>
+
+<p>分发到github上：
+rake deploy</p>
+
+<p>第一次运行时，会询问是否建立对github的授权，输入：yes。然后将站点更新的内容推送到github上。</p>
+
+<p>补充一点：
+最后的但并不是最重要的，我们需要将修改的日志同步到github上，因此下面的3个命令也是必须的。
+git status</p>
+
+<p>git add .</p>
+
+<p>git commit -m &#8216;your message&#8217;</p>
+
+<p>git push origin source</p>
+
+<p>大功告成！</p>
+]]></content>
+  </entry>
   
 </feed>
